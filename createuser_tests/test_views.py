@@ -1,5 +1,3 @@
-import uuid
-
 
 #Testing with views is a little more complicated
 #need to test more code paths: intial display, display after data validation has failed
