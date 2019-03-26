@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 
+from createuser.views import error_message_user_exist, error_message_empty_input
+
 
 class CreateUserInstanceViewtest(TestCase):
     def setUp(self):
@@ -35,16 +37,19 @@ class CreateUserInstanceViewtest(TestCase):
         response = self.client.post(reverse('createuser:index'), {'username':'testuser1',
                                                                   'password':'Helloworld123',
                                                                   'email': 'test@test.com'})
-        #since test_user1 already created, this should redirect to same page
-        self.assertRedirects(response, reverse('createuser:index'))
+        #since test_user1 already exist, no redirection remain on the same page
+        self.assertTrue('error_message' in response.context)
+        # Check that the right Error Message is displayed
+        self.assertEqual(response.context['error_message'], error_message_user_exist)
 
 
     def test_submit_empty_form(self):
         response = self.client.post(reverse('createuser:index'),{'username':None,
                                                                   'password':None,
                                                                   'email':None} )
-        self.assertEqual(response.status_code, 200)
-        self.assertRedirects(response, reverse('createuser:index'))
+        self.assertTrue('error_message' in response.context)
+        # Check that the right Error Message is displayed
+        self.assertEqual(response.context['error_message'], error_message_empty_input)
 
 
 
@@ -54,6 +59,9 @@ class CreateUserInstanceViewtest(TestCase):
                                                                   'email': 'test.test@gmail.com'})
         self.assertEqual(response.status_code, 200)
         self.assertRedirects(response, reverse('createuser:index'))
+        self.assertTrue('error_message' in response.context)
+        # Check that the right Error Message is displayed
+        self.assertEqual(response.context['error_message'], error_message_empty_input)
 
 
     def test_form_invalid_email(self):
@@ -62,6 +70,9 @@ class CreateUserInstanceViewtest(TestCase):
                                                                   'email': None})
         self.assertEqual(response.status_code, 200)
         self.assertRedirects(response, reverse('createuser:index'))
+        self.assertTrue('error_message' in response.context)
+        # Check that the right Error Message is displayed
+        self.assertEqual(response.context['error_message'], error_message_empty_input)
 
 
     def test_uses_correct_template(self):

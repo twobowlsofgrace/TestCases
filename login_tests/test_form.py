@@ -21,6 +21,7 @@ class TestUserForm(TestCase):
         }
         form = LoginForm(data = invalid_data)
         self.assertFalse(form.is_valid(), "Username field is empty")
+        self.assertEqual(form.errors['username'], ["This field is required."])
 
     def test_TC_Login_001_fail2(self):
         # test for invalid field input, password left blank case
@@ -30,6 +31,7 @@ class TestUserForm(TestCase):
         }
         form = LoginForm(data=invalid_data)
         self.assertFalse(form.is_valid(), "Password field is empty")
+        self.assertEqual(form.errors['password'], ["This field is required."])
 
     def test_TC_Login_001_fail3(self):
         # test for invalid field input, password and username left blank case
@@ -39,3 +41,4 @@ class TestUserForm(TestCase):
         }
         form = LoginForm(data=invalid_data)
         self.assertFalse(form.is_valid(), "Username and Password field is empty")
+        self.assertEqual(form.errors['username'], ["This field is required."])

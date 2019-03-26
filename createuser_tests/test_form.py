@@ -3,8 +3,6 @@ from django.test import TestCase
 from createuser.forms import UserForm
 
 class TestUserForm(TestCase):
-    def test_upper(self):
-        self.assertEqual('foo'.upper(), 'FOO')
 
     def test_C_AC_Create_001(self):
         # test valid data
